@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"github.com/kushagragupta/tms/models"
 	"github.com/kushagragupta/tms/services"
+	"github.com/kushagragupta/tms/structs"
 )
 
 type TaskController struct {
@@ -18,11 +19,7 @@ func NewTaskController(repo services.TaskService) *TaskController {
 }
 
 func (c *TaskController) GetTasks(ctx *gin.Context) {
-	var queryParams struct {
-		Status string `form:"status"`
-		Limit  int    `form:"limit"`
-		Offset int    `form:"offset"`
-	}
+	var queryParams structs.QueryParams
 
 	err := ctx.BindQuery(&queryParams)
 	if err != nil {
