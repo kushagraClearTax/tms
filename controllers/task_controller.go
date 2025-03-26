@@ -18,11 +18,24 @@ func NewTaskController(repo services.TaskService) *TaskController {
 }
 
 func (c *TaskController) GetTasks(ctx *gin.Context) {
-	tasks, err := c.service.GetTasks()
+	var queryParams struct {
+		Status string `form:"status"`
+		Limit  int    `form:"limit"`
+		Offset int    `form:"offset"`
+	}
+
+	err := ctx.BindQuery(&queryParams)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	tasks, err := c.service.GetTasks(queryParams.Status, queryParams.Limit, queryParams.Offset)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, tasks)
 }
 
