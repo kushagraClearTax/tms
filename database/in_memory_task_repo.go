@@ -57,3 +57,15 @@ func (r *InMemoryTaskRepository) DeleteTask(id string) error {
 	delete(r.tasks, id)
 	return nil
 }
+
+func (r *InMemoryTaskRepository) GetTasksByStatus(status string) ([]models.Task, error) {
+	var tasks []models.Task
+
+	for _, task := range r.tasks {
+		if task.Completed == (status == "Completed") {
+			tasks = append(tasks, *task)
+		}
+	}
+
+	return tasks, nil
+}
