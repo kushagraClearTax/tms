@@ -10,4 +10,5 @@ type TaskRepository interface {
 	GetTasks() ([]models.Task, error)
 	UpdateTask(task *models.Task) error
 	DeleteTask(id string) error
+	GetTasksByStatus(status string) ([]models.Task, error)
 }
