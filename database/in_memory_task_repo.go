@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/google/uuid"
 	"fmt"
+	"time"
 )
 
 type InMemoryTaskRepository struct {
@@ -18,9 +19,11 @@ func NewInMemoryTaskRepository() *InMemoryTaskRepository {
 }
 
 func (r *InMemoryTaskRepository) CreateTask(task *models.Task) error {
-	task.ID = uuid.New().String()
-	r.tasks[task.ID] = task
-	return nil
+ task.ID = uuid.New().String()
+ task.CreatedAt = time.Now()
+ task.UpdatedAt = time.Now()
+ r.tasks[task.ID] = task
+ return nil
 }
 
 func (r *InMemoryTaskRepository) GetTask(id string) (*models.Task, error) {
@@ -41,14 +44,14 @@ func (r *InMemoryTaskRepository) GetTasks() ([]models.Task, error) {
 }
 
 func (r *InMemoryTaskRepository) UpdateTask(task *models.Task) error {
-	_, ok := r.tasks[task.ID]
-	if !ok {
-		return errors.New("task not found")
-	}
-	r.tasks[task.ID] = task
-	return nil
+ _, ok := r.tasks[task.ID]
+ if !ok {
+  return errors.New("task not found")
+ }
+ task.UpdatedAt = time.Now()
+ r.tasks[task.ID] = task
+ return nil
 }
-
 func (r *InMemoryTaskRepository) DeleteTask(id string) error {
 	_, ok := r.tasks[id]
 	if !ok {
