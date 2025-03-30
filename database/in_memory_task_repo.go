@@ -12,6 +12,7 @@ type InMemoryTaskRepository struct {
 	tasks map[string]*models.Task
 }
 
+// Using Repository design pattern to set repo for now as no db added
 func NewInMemoryTaskRepository() *InMemoryTaskRepository {
 	return &InMemoryTaskRepository{
 		tasks: make(map[string]*models.Task),
